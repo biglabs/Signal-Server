@@ -8,7 +8,7 @@ import org.apache.commons.codec.binary.Hex;
 public class RedPhoneConfiguration {
 
   @JsonProperty
-  private String authKey;
+  private String authKey = "31343735383335333239353934";
 
   public Optional<byte[]> getAuthorizationKey() throws DecoderException {
     if (authKey == null || authKey.trim().length() == 0) {

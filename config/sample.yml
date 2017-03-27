@@ -1,18 +1,18 @@
 twilio: # Twilio SMS gateway configuration
-  accountId:
-  accountToken:
-  numbers:
-  localDomain: # The domain Twilio can call back to.
+  accountId: AC2b9c34d3239cf3cac1db9a705c5fc340
+  accountToken: d992a4cdc4e0d3a6779e3800f54f277f
+  numbers: [12345754274]
+  localDomain: localhost.com # The domain Twilio can call back to.
 
 push: # GCM/APN push server configuration
-  host:
-  port:
-  username:
-  password:
+  host: 127.0.0.1
+  port: 9090
+  username: lavalamp
+  password: 123456
 
 s3: # AWS S3 configuration
-  accessKey: 
-  accessSecret: 
+  accessKey:
+  accessSecret:
 
   # Name of the S3 bucket (needs to have been created)
   # for attachments to go.  Should be configured with
@@ -20,43 +20,38 @@ s3: # AWS S3 configuration
   attachmentsBucket:
 
 directory: # Redis server configuration for TS directory
-  url:
+  url: redis://192.168.99.100:32775
 
 cache: # Redis server configuration for general purpose caching
-  url:
+  url: redis://192.168.99.100:32774
 
 websocket:
   enabled: true
 
 messageStore: # Postgres database configuration for message store
   driverClass: org.postgresql.Driver
-  user:
-  password:
-  url:
+  user: user1
+  password: 123456
+  url: jdbc:postgresql:/192.168.99.100:32773/msgstore
 
 database: # Postgres database configuration for account store
   # the name of your JDBC driver
   driverClass: org.postgresql.Driver
-
   # the username
-  user:
-
+  user: user1
   # the password
-  password:
-
+  password: 123456
   # the JDBC URL
-  url: jdbc:postgresql://somehost:somport/somedb
-
+  url: jdbc:postgresql://192.168.99.100:32771/openwhisper
   # any properties specific to your JDBC driver:
   properties:
     charSet: UTF-8
 
 federation:
   name:
-  peers: 
+  peers:
     -
       name: somepeer
       url: https://foo.com
       authenticationToken: foo
-      certificate: in pem format 
-
+      certificate: in pem format

@@ -64,6 +64,12 @@ public class AttachmentController {
     this.urlSigner              = urlSigner;
   }
 
+  public AttachmentController(RateLimiters rateLimiters,
+                              FederatedClientManager federatedClientManager)
+  {
+    this(rateLimiters, federatedClientManager, null);
+  }
+
   @Timed
   @GET
   @Produces(MediaType.APPLICATION_JSON)

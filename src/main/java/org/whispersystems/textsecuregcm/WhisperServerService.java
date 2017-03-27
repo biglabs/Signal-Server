@@ -185,11 +185,11 @@ public class WhisperServerService extends Application<WhisperServerConfiguration
     ApnFallbackManager       apnFallbackManager  = new ApnFallbackManager(pushServiceClient, pubSubManager);
     TwilioSmsSender          twilioSmsSender     = new TwilioSmsSender(config.getTwilioConfiguration());
     SmsSender                smsSender           = new SmsSender(twilioSmsSender);
-    UrlSigner                urlSigner           = new UrlSigner(config.getS3Configuration());
+    //UrlSigner                urlSigner           = new UrlSigner(config.getS3Configuration());
     PushSender               pushSender          = new PushSender(apnFallbackManager, pushServiceClient, websocketSender, config.getPushConfiguration().getQueueSize());
     ReceiptSender            receiptSender       = new ReceiptSender(accountsManager, pushSender, federatedClientManager);
     FeedbackHandler          feedbackHandler     = new FeedbackHandler(pushServiceClient, accountsManager);
-    TurnTokenGenerator       turnTokenGenerator  = new TurnTokenGenerator(config.getTurnConfiguration());
+    //TurnTokenGenerator       turnTokenGenerator  = new TurnTokenGenerator(config.getTurnConfiguration());
     Optional<byte[]>         authorizationKey    = config.getRedphoneConfiguration().getAuthorizationKey();
 
     environment.lifecycle().manage(apnFallbackManager);
@@ -197,7 +197,7 @@ public class WhisperServerService extends Application<WhisperServerConfiguration
     environment.lifecycle().manage(feedbackHandler);
     environment.lifecycle().manage(pushSender);
 
-    AttachmentController attachmentController = new AttachmentController(rateLimiters, federatedClientManager, urlSigner);
+    AttachmentController attachmentController = new AttachmentController(rateLimiters, federatedClientManager);
     KeysControllerV2     keysControllerV2     = new KeysControllerV2(rateLimiters, keys, accountsManager, federatedClientManager);
     MessageController    messageController    = new MessageController(rateLimiters, pushSender, receiptSender, accountsManager, messagesManager, federatedClientManager);
 
@@ -211,7 +211,7 @@ public class WhisperServerService extends Application<WhisperServerConfiguration
                                                              .buildAuthFilter()));
     environment.jersey().register(new AuthValueFactoryProvider.Binder());
 
-    environment.jersey().register(new AccountController(pendingAccountsManager, accountsManager, rateLimiters, smsSender, messagesManager, new TimeProvider(), authorizationKey, turnTokenGenerator, config.getTestDevices()));
+    environment.jersey().register(new AccountController(pendingAccountsManager, accountsManager, rateLimiters, smsSender, messagesManager, new TimeProvider(), authorizationKey, config.getTestDevices()));
     environment.jersey().register(new DeviceController(pendingDevicesManager, accountsManager, messagesManager, rateLimiters, config.getMaxDevices()));
     environment.jersey().register(new DirectoryController(rateLimiters, directory));
     environment.jersey().register(new FederationControllerV1(accountsManager, attachmentController, messageController));

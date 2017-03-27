@@ -113,6 +113,17 @@ public class AccountController {
     }
   }
 
+  public AccountController(PendingAccountsManager pendingAccounts,
+                           AccountsManager accounts,
+                           RateLimiters rateLimiters,
+                           SmsSender smsSenderFactory,
+                           MessagesManager messagesManager,
+                           TimeProvider timeProvider,
+                           Optional<byte[]> authorizationKey,
+                           Map<String, Integer> testDevices){
+    this(pendingAccounts, accounts, rateLimiters, smsSenderFactory, messagesManager, timeProvider, authorizationKey, null, testDevices);
+  }
+
   @Timed
   @GET
   @Path("/{transport}/code/{number}")
@@ -229,12 +240,14 @@ public class AccountController {
   public AuthorizationToken verifyToken(@Auth Account account)
       throws RateLimitExceededException
   {
+
     if (!tokenGenerator.isPresent()) {
       logger.debug("Attempt to authorize with key but not configured...");
       throw new WebApplicationException(Response.status(404).build());
     }
-
-    return tokenGenerator.get().generateFor(account.getNumber());
+    AuthorizationToken auth = tokenGenerator.get().generateFor(account.getNumber());
+    logger.error("auth : " + auth.getToken());
+    return auth;
   }
 
   @Timed
@@ -277,6 +290,7 @@ public class AccountController {
   @Path("/apn/")
   @Consumes(MediaType.APPLICATION_JSON)
   public void setApnRegistrationId(@Auth Account account, @Valid ApnRegistrationId registrationId) {
+    logger.error("account key : " + account.getIdentityKey());
     Device device = account.getAuthenticatedDevice().get();
     device.setApnId(registrationId.getApnRegistrationId());
     device.setVoipApnId(registrationId.getVoipRegistrationId());

@@ -26,4 +26,8 @@ public class AuthorizationToken {
 
   public AuthorizationToken() {}
 
+  public String getToken(){
+    return token;
+  }
+
 }

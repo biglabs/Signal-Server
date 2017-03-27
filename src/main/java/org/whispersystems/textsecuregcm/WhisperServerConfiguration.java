@@ -53,7 +53,6 @@ public class WhisperServerConfiguration extends Configuration {
   @JsonProperty
   private PushConfiguration push;
 
-  @NotNull
   @Valid
   @JsonProperty
   private S3Configuration s3;
@@ -113,7 +112,6 @@ public class WhisperServerConfiguration extends Configuration {
   private JerseyClientConfiguration httpClient = new JerseyClientConfiguration();
 
   @Valid
-  @NotNull
   @JsonProperty
   private TurnConfiguration turn;
 
